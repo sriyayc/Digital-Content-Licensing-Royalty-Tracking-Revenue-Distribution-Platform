@@ -5,6 +5,17 @@ DBMS Experiential Learning, Level 3 Project. Option 1: SQL (MySQL) + NoSQL (Mong
 
 ---
 
+## Team
+
+| Member | SRN | Responsibilities |
+|--------|-----|------------------|
+| Sphoorthi Pulipati | PES2UG24CS514 | **Application:** creator management page (`app/(app)/creators/page.tsx`, `app/api/creators/route.ts`) and platform management page (`app/(app)/platforms/page.tsx`, `app/api/platforms/route.ts`), both admin-only, with menu links in `components/nav.tsx`. **Database:** extra SQL test cases in `scripts/run-sql-tests.mjs` covering creator e-mail uniqueness and validation and the foreign key that protects licensed works. **Documentation:** application screenshots and testing results. |
+| Sriya Yashita Chandu | PES2UG24CS523 | Database design and SQL objects (schema, views, stored routines, triggers, seed data), MongoDB usage ingestion, authentication and roles, and the dashboard, content, licences, usage, royalties and payments pages. |
+
+Individual commits are visible in the Git history of this repository.
+
+---
+
 ## 1. Objectives
 
 - Record which creators own which works, and in what percentage.
@@ -27,6 +38,8 @@ DBMS Experiential Learning, Level 3 Project. Option 1: SQL (MySQL) + NoSQL (Mong
 | F7 | Create a payout for a creator; update payment status | Admin |
 | F8 | View own earnings, works, licences, royalty lines and payments | Creator |
 | F9 | Dashboard with totals, revenue per platform and creator earnings | All |
+| F10 | List, add and edit creators; duplicate or malformed e-mails are rejected by the database | Admin |
+| F11 | List, add and edit platforms; duplicate names and malformed contact e-mails are rejected by the database | Admin |
 
 ## 3. ER diagram
 
@@ -202,11 +215,53 @@ Configuration (hosts, users, passwords, JWT secret) comes from environment varia
 
 ## 10. Application screenshots
 
-Add screenshots of: Login, Admin dashboard, Content (search + add work), Licences, Usage reports, Royalties, Payments, Creator dashboard.
+### 10.1 Login and admin dashboard
+
+![Login](screenshots/login.png)
+
+![Admin dashboard](screenshots/dashboard.png)
+
+![Creator earnings view](screenshots/dashboard-earnings.png)
+
+### 10.2 Creator management (admin only)
+
+![Creator management](screenshots/creators-page.png)
+
+The admin can list, add and edit creators. Before this page, creators existed only as seed data. Input is validated by the database: a duplicate e-mail is rejected by the `UNIQUE` constraint `uq_creator_email`, and a malformed e-mail by the `CHECK` constraint `ck_creator_email`.
+
+![Duplicate e-mail rejected](screenshots/duplicate-email-error.png)
+
+### 10.3 Platform management (admin only)
+
+![Platform management](screenshots/platforms-page.png)
+
+The admin can list, add and edit distribution platforms. Platform names are unique (`uq_platform_name`) and contact e-mails are validated by `ck_platform_email`.
+
+### 10.4 Content, licences, usage reports, royalties and payments
+
+![Content](screenshots/content.png)
+
+![Licences](screenshots/licences.png)
+
+![Usage reports](screenshots/usage-reports.png)
+
+![Royalties](screenshots/royalties.png)
+
+![Payments](screenshots/payments.png)
+
+### 10.5 Creator view
+
+![Creator dashboard](screenshots/creator-dashboard.png)
+
+A creator who logs in sees only their own earnings, works, licences, royalty lines and payments.
+
+### 10.6 Database test results
+
+![Test results](screenshots/test-results.png)
 
 ## 11. Testing results
 
-`npm run test:db` runs 16 database test cases covering CHECK, UNIQUE, FK, triggers, function, procedures and transactions. All 16 pass. Full results: [TEST_RESULTS.md](TEST_RESULTS.md).
+`npm run test:db` runs 19 database test cases covering CHECK, UNIQUE, FK, triggers, function, procedures and transactions. All 19 pass. Full results: [TEST_RESULTS.md](TEST_RESULTS.md).
 
 Tested through the application:
 
@@ -221,6 +276,8 @@ Tested through the application:
 | Usage report with a licence of another platform | line rejected, others loaded (PARTIAL) | Pass |
 | Calculate royalties Jul–Oct 2026 | new royalty lines created | Pass |
 | Pay a creator with nothing owed | "Nothing to pay…" | Pass |
+| Add creator with an existing e-mail | rejected by UNIQUE uq_creator_email | Pass |
+| Add platform with an existing name | rejected by UNIQUE uq_platform_name | Pass |
 
 ## 12. Conclusion
 
