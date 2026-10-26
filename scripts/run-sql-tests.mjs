@@ -38,6 +38,14 @@ test('FOREIGN KEY: licence for a missing platform is rejected', () =>
                VALUES (999, 1, 'NON_EXCLUSIVE', '2026-01-01', 0.3, 'INR')`, 1452));
 test('FOREIGN KEY: deleting a creator who owns content is blocked', () =>
   expectError(`DELETE FROM creator WHERE creator_id = 1`, 1451));
+test('UNIQUE: duplicate creator e-mail is rejected', () =>
+  expectError(`INSERT INTO creator (name, creator_type, email, country)
+               SELECT 'Duplicate Test', 'INDIVIDUAL', email, 'IN' FROM creator WHERE creator_id = 1`, 1062));
+test('CHECK: invalid creator e-mail is rejected', () =>
+  expectError(`INSERT INTO creator (name, creator_type, email, country)
+               VALUES ('Bad Mail Creator', 'INDIVIDUAL', 'not-an-email', 'IN')`, 3819));
+test('FOREIGN KEY: deleting a work that has a licence is blocked', () =>
+  expectError(`DELETE FROM content WHERE content_id = (SELECT content_id FROM license LIMIT 1)`, 1451));
 test('TRIGGER: ownership total above 100% is rejected', () =>
   expectError(`INSERT INTO ownership VALUES (7, 1, 10, 'PRODUCER')`, 1644));
 test('TRIGGER: ownership up to exactly 100% is accepted', async () => {
