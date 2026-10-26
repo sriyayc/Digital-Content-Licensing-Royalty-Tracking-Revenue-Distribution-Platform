@@ -239,11 +239,17 @@ The admin can list, add and edit distribution platforms. Platform names are uniq
 
 ### 10.4 Content, licences, usage reports, royalties and payments
 
-![Content](screenshots/content.png)
+![Content: add work form](screenshots/content.png)
+
+![Content: catalogue with full-text search and ownership allocation](screenshots/content-catalogue.png)
 
 ![Licences](screenshots/licences.png)
 
-![Usage reports](screenshots/usage-reports.png)
+![Usage reports: submit a raw report](screenshots/usage-reports.png)
+
+![Usage reports: MongoDB aggregations](screenshots/usage-aggregations.png)
+
+![Usage reports: submitted reports stored in MongoDB](screenshots/usage-submitted-reports.png)
 
 ![Royalties](screenshots/royalties.png)
 
