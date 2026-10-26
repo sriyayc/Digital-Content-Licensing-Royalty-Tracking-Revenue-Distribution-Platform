@@ -9,6 +9,7 @@ const LINKS = [
   ['/licenses', 'Licences', 'ALL'],
   ['/usage', 'Usage reports', 'ADMIN'],
   ['/creators', 'Creators', 'ADMIN'],
+  ['/platforms', 'Platforms', 'ADMIN'],
   ['/royalties', 'Royalties', 'ALL'],
   ['/payments', 'Payments', 'ALL'],
 ];
